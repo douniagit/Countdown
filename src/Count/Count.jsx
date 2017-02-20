@@ -1,44 +1,62 @@
 import React from "react";
-	
 
-
+		
 class Count extends React.Component{
 
-		//init state
-		state={
-			date:0,
-			now:new Date(),
-			finalDate: new Date(2017,1,4)
-			
-		}
+ constructor(props) {
+    super(props);
+    this.state = {
+    	date:new Date(),
+    	goal:new Date("2017,6,14 00:00:00"),
+      daysLeft: null,
+      hoursLeft: null,
+      minutesLeft:null,
+      secondesLeft:null
+    };
+  }
 
-		timeRunning(){
-			if(this.state.finalDate = this.state.now){
-				return <p>HAPPY B-DAY</p>
-			}
-			else{
-				return <p>you have to wait ahahah</p>
-			}
-		}
+  tick(){
+  const now= new Date().getTime(); 
+  const final = new Date("2017,6,14 00:00:00").getTime();
+  
+  const path= final-now;
+  const days = Math.floor(path / (1000 * 60 * 60 * 24));
+	const hours = Math.floor((path % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	const minutes = Math.floor((path % (1000 * 60 * 60)) / (1000 * 60));
+	const seconds = Math.floor((path % (1000 * 60)) / 1000);
+    
+    this.setState({
+      daysLeft: days, 
+      hoursLeft:hours, 
+      minutesLeft:minutes,
+      secondesLeft:seconds});
+  }
+  
+   componentDidMount() {
+    this.tick();
+    this.timer = setInterval( 
+      ()=>this.tick(), 1000);
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.timer);
+  }
 
 	render(){
-		
-		  	// let timeDecrease=this.state.date -1;
-		  	// const time= new Date();
 
 		return(
-			<div className="container">
-				<h1> My Anniversary </h1>
-				
-					<div className="Affichage">
-					 {this.timeRunning()}
-					 
-					 </div>
-
-
-			</div>
-			)
+			<div>
+			<h1>CountDown Timer</h1>
+        <h2>It is now {this.state.date.toLocaleDateString()+" "+ this.state.date.toLocaleTimeString()}.</h2>
+        <h2>final date</h2>
+		 {this.state.goal.toLocaleDateString()+" "+this.state.goal.toLocaleTimeString()}   
+        <h2> decompte</h2>
+        <p> jours {this.state.daysLeft}</p>
+        <p> heure {this.state.hoursLeft}</p>
+        <p> minutes {this.state.minutesLeft}</p>
+        <p> secondes {this.state.secondesLeft}</p>
+      </div>
+		)
 	}
 }
 export default Count;
