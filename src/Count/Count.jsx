@@ -2,7 +2,9 @@ import React from "react";
 
 		
 class Count extends React.Component{
-
+//un props est par defaut immutable
+//props qui peut se changer c le super props, il devient un state
+//mais qui peut voyager de parent à enfant, alors qu'un state seul ne peut pas
  constructor(props) {
     super(props);
     this.state = {
@@ -15,7 +17,7 @@ class Count extends React.Component{
     };
   }
 
-  tick(){
+  timeRunning(){
   const now= new Date().getTime(); 
   const final = new Date("2017,6,14 00:00:00").getTime();
   
@@ -33,9 +35,8 @@ class Count extends React.Component{
   }
   
    componentDidMount() {
-    this.tick();
     this.timer = setInterval( 
-      ()=>this.tick(), 1000);
+      ()=>this.timeRunning(), 1000);
   }
 
   componentWillUnmount() {
